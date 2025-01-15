@@ -1,0 +1,64 @@
+@backend_HostAddress = http://localhost:8000
+@baseUrl = http://localhost:8000
+
+### Register new user
+POST {{backend_HostAddress}}/api/auth/users
+Content-Type: application/json
+
+{
+    "email": "user@example.com",
+    "password": "strongpassword",
+    "confirmPassword": "strongpassword"
+}
+
+### Login
+POST {{backend_HostAddress}}/api/auth/jwt/create
+Content-Type: application/json
+
+{
+    "email": "user@example.com",
+    "password": "strongpassword"
+}
+
+### Logout (requires authentication)
+POST {{backend_HostAddress}}/api/auth/logout
+Authorization: Bearer {{accessToken}}
+
+### Refresh Token
+POST {{backend_HostAddress}}/api/auth/jwt/refresh
+Content-Type: application/json
+
+{
+    "refreshToken": "your_refresh_token_here"
+}
+
+### Request Password Reset
+POST {{backend_HostAddress}}/api/auth/users/reset_password
+Content-Type: application/json
+
+{
+    "email": "user@example.com"
+}
+
+### Confirm Password Reset
+POST {{backend_HostAddress}}/api/auth/users/reset_password_confirm
+Content-Type: application/json
+
+{
+    "token": "reset_token_from_email",
+    "newPassword": "newstrongpassword",
+    "confirmPassword": "newstrongpassword"
+}
+
+### Get Weather Forecast (existing endpoint)
+GET {{backend_HostAddress}}/weatherforecast/
+Accept: application/json
+
+### Get Current User (requires authentication)
+GET {{backend_HostAddress}}/api/auth/users/me
+Authorization: Bearer {{accessToken}}
+Accept: application/json
+
+### Test Authentication
+GET {{backend_HostAddress}}/api/auth/test
+Authorization: Bearer {{accessToken}}
