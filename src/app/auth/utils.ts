@@ -26,12 +26,12 @@ const login = (email: string, password: string) => {
 
 const logout = () => {
   const refreshToken = getToken("refresh");
-  return api.post({ refresh: refreshToken }, "/auth/logout/");
+  return api.post({ refreshToken: refreshToken }, "/auth/logout/");
 };
 
 const handleJWTRefresh = () => {
   const refreshToken = getToken("refresh");
-  return api.post({ refresh: refreshToken }, "/auth/jwt/refresh");
+  return api.post({ refreshToken: refreshToken }, "/auth/jwt/refresh");
 };
 
 const resetPassword = (email: string) => {
