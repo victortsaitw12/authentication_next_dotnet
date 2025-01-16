@@ -30,6 +30,14 @@ public class UserService : IUserService
         return user;
     }
 
+    public async Task<User?> GetUser(string uid)
+    {
+        var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == uid);
+        if (user == null) return null;
+
+        return user;
+    }
+
     public async Task<User> RegisterUserAsync(RegisterRequest request)
     {
         // Check if user already exists

@@ -59,7 +59,6 @@ public class AuthController : ControllerBase
         var claims = new[]
         {
             new Claim(ClaimTypes.NameIdentifier, user.Id),
-            new Claim(ClaimTypes.Email, user.Email),
         };
 
         var accessToken = _jwtTokenService.GenerateAccessToken(claims);
@@ -91,14 +90,13 @@ public class AuthController : ControllerBase
         var storedToken = _refreshTokenService.GetRefreshTokenAsync(request.RefreshToken).Result;
         if (storedToken == null || storedToken.ExpiryDate < DateTime.UtcNow)
         {
-            return BadRequest(new { message = "Invalid or expired refresh token" });
+            return Ok(new { message = "Invalid or expired refresh token" });
         }
 
         // Generate new tokens
         var claims = new[]
         {
             new Claim(ClaimTypes.NameIdentifier, storedToken.UserId),
-
         };
         var newAccessToken = _jwtTokenService.GenerateAccessToken(claims);
         var newRefreshToken = _jwtTokenService.GenerateRefreshToken();
@@ -162,17 +160,11 @@ public class AuthController : ControllerBase
     [HttpGet("test")]
     public IActionResult Test()
     {
-
-
-
-
         var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-        var email = User.FindFirst(ClaimTypes.Email)?.Value;
         
         return Ok(new { 
             message = "Authentication successful",
             userId,
-            email,
             claims = User.Claims.Select(c => new { c.Type, c.Value })
         });
     }

@@ -33,13 +33,13 @@ namespace backend.Controllers
                 Console.WriteLine($"Token expires in {remainingTime.TotalMinutes:F2} minutes");
             }
 
-            var userEmail = User.FindFirst(System.Security.Claims.ClaimTypes.Email)?.Value;
-            if (userEmail == null)
+            var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+            if (userId == null)
             {
-                return BadRequest(new { message = "Email claim not found in token" });
+                return BadRequest(new { message = "NameIdentifier claim not found in token" });
             }
 
-            User? user = await _userService.GetUserByEmailAsync(userEmail);
+            User? user = await _userService.GetUser(userId);
             if (user == null)
             {
                 return NotFound();
